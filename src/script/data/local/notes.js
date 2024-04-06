@@ -107,8 +107,20 @@ const notesData = [
 ];
 
 class Notes {
+  static keyNotes = "NOTES";
+  static daftarNotes = null;
+  static {
+    const getDataNotes = localStorage.getItem(Notes.keyNotes);
+    if (getDataNotes === null) {
+      const dataNotes = JSON.stringify(notesData);
+      localStorage.setItem(Notes.keyNotes, dataNotes);
+    }
+    const dataNotes = localStorage.getItem(Notes.keyNotes);
+    const data = JSON.parse(dataNotes);
+    Notes.daftarNotes = [...data];
+  }
   static getNotes() {
-    const localNotes = notesData.map((notes) => {
+    const localNotes = Notes.daftarNotes.map((notes) => {
       return {
         dataTitle: notes.title,
         dataBody: notes.body,
@@ -118,7 +130,10 @@ class Notes {
   }
 
   static addNotes(titleNotes, bodyNotes) {
-    notesData.unshift({ title: titleNotes, body: bodyNotes });
+    Notes.daftarNotes.unshift({ title: titleNotes, body: bodyNotes });
+    const dataNotes = JSON.stringify(Notes.daftarNotes);
+
+    localStorage.setItem(Notes.keyNotes, dataNotes);
     return;
   }
 }
