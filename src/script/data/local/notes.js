@@ -110,9 +110,16 @@ class Notes {
   static keyNotes = "NOTES";
   static daftarNotes = null;
   static {
+    const filterFirstData = notesData.map((note) => {
+      return {
+        title: note.title,
+        body: note.body,
+      };
+    });
+
     const getDataNotes = localStorage.getItem(Notes.keyNotes);
     if (getDataNotes === null) {
-      const dataNotes = JSON.stringify(notesData);
+      const dataNotes = JSON.stringify(filterFirstData);
       localStorage.setItem(Notes.keyNotes, dataNotes);
     }
     const dataNotes = localStorage.getItem(Notes.keyNotes);
